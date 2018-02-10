@@ -1,0 +1,10 @@
+﻿<!-- $Id: config_dev.xml,v 1.99 2005/10/26 02:38:34 micm Exp $ -->
+<configuration>
+  <section name="framework">
+  	<!--<entry key="dbtype" value="Oracle" />-->
+	<entry key="dbtype" value="MySQL"/>
+  </section>
+  <section name="dsList">
+    <entry key="getMaster" value="dbMaster" />
+  </section>
+</configuration>
