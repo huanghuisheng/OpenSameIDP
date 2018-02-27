@@ -6,27 +6,33 @@
   */
 package no.steras.opensamlbook.idpWebAction;
 
+
 import net.sf.json.JSONObject;
 import no.steras.opensamlbook.idpDto.ObjectRsDTO;
 import no.steras.opensamlbook.util.HttpRedirectClient;
 import no.steras.opensamlbook.util.OpenSAMLUtils;
 import no.steras.opensamlbook.util.json.Config;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.AuthzDecisionStatement;
-import org.opensaml.saml.saml2.core.DecisionTypeEnumeration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.DecimalFormat;
+import java.util.*;
 
 
 //通过@Controller注解标识HelloController这个类是一个控制器
@@ -100,7 +106,52 @@ public class HelloController {
 
 	}
 
+	// ----------------------------批量导入
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping("basicController/fileUpload")
+	public  void fileUpload(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request, String groupid) throws Exception {
+		String path1 = request.getContextPath();
+		String cp11111 = request.getSession().getServletContext().getRealPath("/");
+		String path = "/" + new Date().getTime();
+		InputStream input = file.getInputStream();
+		Workbook wb = null;
+		// 根据文件格式(2003或者2007)来初始化
+		wb = new XSSFWorkbook(input);
+		Sheet sheet = wb.getSheetAt(0); // 获得第一个表单
+		Iterator<Row> rows = sheet.rowIterator();
+		List listImei = new ArrayList<Object>();
+		List errorImei = new ArrayList<Object>();
 
+		while (rows.hasNext()) {
+			Row row = rows.next(); // 获得行数据
+			Iterator<Cell> cells = row.cellIterator(); // 获得第一行的迭代器
+			if (row.getRowNum() == 0) {
+				continue;
+			}
+			while (cells.hasNext()) {
+				Cell cell = cells.next();
+				switch (cell.getCellType()) {
+					// 根据cell中的类型来输出数据
+					case HSSFCell.CELL_TYPE_NUMERIC:
+						DecimalFormat df = new DecimalFormat("0");
+						String whatYourWant = df.format(cell.getNumericCellValue());
+						listImei.add(whatYourWant);
+						break;
+
+					default:
+						errorImei.add(cell.getStringCellValue());
+						break;
+				}
+			}
+		}
+		System.out.println("list is ---" + listImei);
+		System.out.println("list size is ---" + listImei.size());
+		System.out.println("error is ---" + errorImei);
+		System.out.println("groupid is ---" + groupid);
+
+		// --------------------------------------输出imei号；
+	}
 
 
 }

@@ -5,6 +5,7 @@ import com.tone.util.BaseProcessor;
 import no.steras.opensamlbook.idpDto.ArtifactDTO;
 import no.steras.opensamlbook.idpDto.PermissionDTO;
 import no.steras.opensamlbook.idpPojo.DsAssociationPermission;
+import no.steras.opensamlbook.idpPojo.DsServiceProvider;
 import no.steras.opensamlbook.idpPojo.DsUser;
 import no.steras.opensamlbook.idpPojo.DsUserAssociation;
 import no.steras.opensamlbook.idpWebAction.IdpSsoController;
@@ -87,6 +88,54 @@ public class IdpSsoMySQLDAOImpl extends BaseDAO implements IdpSsoDAO {
 		List<PermissionDTO> list=this.select(sql.toString(),null,param.toArray(), new BaseProcessor(PermissionDTO.class));
 		return list;
 	}
+
+	public int saveServiceProvider(DsServiceProvider serviceProvider) {
+
+		Object object = 	this.create(serviceProvider);
+		if(object!=null)
+		{
+			return Integer.valueOf(String.valueOf(object));
+		}else {
+			return -1;
+		}
+
+	}
+
+    public Object saveUser(DsUser user) {
+        return this.create(user);
+    }
+
+    public List<DsUser> queryUser(DsUser user) {
+
+        StringBuffer sql =new StringBuffer();
+        List param=new ArrayList();
+        sql.append("SELECT  * from ds_user where 1=1");
+        if(user.getLoginName()!=null)
+        {
+            sql.append(" and login_name like ? ");
+            param.add("%"+user.getLoginName()+"%");
+        }
+        if(user.getPassword()!=null)
+        {
+            sql.append(" and password = ? ");
+            param.add(user.getPassword());
+        }
+        List<DsUser> list=this.select(sql.toString(),null,param.toArray(), new BaseProcessor(DsUser.class));
+        return list;
+    }
+
+    public List<DsServiceProvider> queryServiceProvider(DsServiceProvider serviceProvider) {
+        StringBuffer sql =new StringBuffer();
+        List param=new ArrayList();
+        sql.append("SELECT  * from ds_service_provider where 1=1 and status ='A' ");
+//        if(serviceProvider.getSeviceName()!=null)
+//        {
+            sql.append(" and sevice_name like ? ");
+            param.add("%"+serviceProvider.getSeviceName()+"%");
+//        }
+        List<DsServiceProvider> list=this.select(sql.toString(),null,param.toArray(), new BaseProcessor(DsServiceProvider.class));
+        return list;
+    }
 
 
 }

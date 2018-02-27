@@ -7,11 +7,19 @@ import no.steras.opensamlbook.idpDao.IdpSsoDAO;
 import no.steras.opensamlbook.idpDto.ArtifactDTO;
 import no.steras.opensamlbook.idpDto.PermissionDTO;
 import no.steras.opensamlbook.idpPojo.DsAssociationPermission;
+import no.steras.opensamlbook.idpPojo.DsServiceProvider;
 import no.steras.opensamlbook.idpPojo.DsUser;
 import no.steras.opensamlbook.idpPojo.DsUserAssociation;
 import no.steras.opensamlbook.idpService.IdpSsoService;
 import no.steras.opensamlbook.idpWebAction.IdpSsoController;
 import no.steras.opensamlbook.util.*;
+import no.steras.opensamlbook.util.Base64;
+import no.steras.opensamlbook.util.generator.CustomGenerator;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.xml.security.utils.EncryptionConstants;
 import org.joda.time.DateTime;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -36,14 +44,14 @@ import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.InputStream;
+import java.util.*;
 
 public class IdpSsoServiceImpl implements IdpSsoService {
     private static Logger logger = (Logger) LoggerFactory.getLogger(IdpSsoController.class);
@@ -91,8 +99,6 @@ public class IdpSsoServiceImpl implements IdpSsoService {
             resp.sendRedirect(consumerServiceURL + "?SAMLart=" + artifactId);
 
         }
-
-
     }
 
     public int getUser(DsUser user, HttpServletRequest req) {
@@ -187,6 +193,96 @@ public class IdpSsoServiceImpl implements IdpSsoService {
         return OpenSAMLUtils.buildXMLObjectToString(response);
     }
 
+    public int saveServiceProvider(DsServiceProvider serviceProvider) {
+        List<DsServiceProvider> list = idpSsoDAO.queryServiceProvider(serviceProvider);
+        if(list!=null&&list.size()==0)
+        {
+            serviceProvider.setId((Long) CustomGenerator.generate());
+            Object object = idpSsoDAO.saveServiceProvider(serviceProvider);
+            if(object!=null)
+            {
+                return 1;
+            }else {
+                return -1;
+            }
+        }
+        return 1;
+    }
+
+    public int saveBatchUser(CommonsMultipartFile file) {
+        InputStream input = null;
+        Workbook wb = null;
+        try {
+            input = file.getInputStream();
+            wb = new XSSFWorkbook(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // 根据文件格式(2003或者2007)来初始化
+        Sheet sheet = wb.getSheetAt(0); // 获得第一个表单
+        Iterator<Row> rows = sheet.rowIterator();
+        List listImei = new ArrayList<Object>();
+        List errorImei = new ArrayList<Object>();
+
+        while (rows.hasNext()) {
+            Row row = rows.next(); // 获得行数据
+            Iterator<Cell> cells = row.cellIterator(); // 获得第一行的迭代器
+
+
+
+            if (row.getRowNum() == 0) {
+                continue;
+            }
+//            用户名称	地区	性别	电话号码	email地址	密码	登记系统编码
+            while (cells.hasNext()) {
+                Cell cell = cells.next();
+            }
+            DsUser user=new DsUser();
+            user.setLoginName(row.getCell(0).getStringCellValue());
+            user.setRegion(Long.valueOf(row.getCell(1).getStringCellValue()));
+            user.setSex(Long.valueOf(row.getCell(2).getStringCellValue()));
+            user.setPhone(row.getCell(0).getStringCellValue());
+            user.setEmail(row.getCell(0).getStringCellValue());
+            user.setPassword(row.getCell(5).getStringCellValue());
+
+
+
+
+
+
+
+        }
+
+        //批量保存用户信息
+
+
+        System.out.println("list is ---" + listImei);
+        System.out.println("list size is ---" + listImei.size());
+        System.out.println("error is ---" + errorImei);
+        return 0;
+    }
+
+    public int saveUser(DsUser user) {
+        List<DsUser> list = idpSsoDAO.getUser(user);
+        if(list!=null&&list.size()==0)
+        {
+            Object object = 	idpSsoDAO.saveUser(user);
+            if(object!=null)
+            {
+                return 1;
+            }else {
+                return -1;
+            }
+        }
+        return 1;
+    }
+
+    public int saveBatchUserAssociationPermission(CommonsMultipartFile file) {
+        return 0;
+    }
+
+
     private Assertion buildAssertion(DsUser user, PermissionDTO permissionDTO) {
         Assertion assertion = OpenSAMLUtils.buildSAMLObject(Assertion.class);
         Issuer issuer = OpenSAMLUtils.buildSAMLObject(Issuer.class);
@@ -272,31 +368,38 @@ public class IdpSsoServiceImpl implements IdpSsoService {
 
     private Assertion buildAssertion(List<DsAssociationPermission> permissionList,ArtifactDTO artifactDTO) {
         Assertion assertion = OpenSAMLUtils.buildSAMLObject(Assertion.class);
+        //IDP的唯一标识符
         Issuer issuer = OpenSAMLUtils.buildSAMLObject(Issuer.class);
         issuer.setValue(IDPConstants.IDP_ENTITY_ID);
         assertion.setIssuer(issuer);
         assertion.setIssueInstant(new DateTime());
         assertion.setID(OpenSAMLUtils.generateSecureRandomId());
+
         Subject subject = OpenSAMLUtils.buildSAMLObject(Subject.class);
         assertion.setSubject(subject);
 
+        //用户主题标识id
         NameID nameID = OpenSAMLUtils.buildSAMLObject(NameID.class);
         nameID.setFormat(NameIDType.TRANSIENT);
         nameID.setValue("Some NameID value");
-        nameID.setSPNameQualifier("SP name qualifier");
-        nameID.setNameQualifier("Name qualifier");
-
         subject.setNameID(nameID);
 
+        //主题被确认信息
         subject.getSubjectConfirmations().add(buildSubjectConfirmation());
 
+
+        //断言被认为有效的条件
         assertion.setConditions(buildConditions());
 
-        assertion.getAttributeStatements().add(buildAttributeStatement(permissionList,artifactDTO));
-
+        //描述IDP如何身份验证的行为
         assertion.getAuthnStatements().add(buildAuthnStatement());
 
+        //授权决策
         assertion.getAuthzDecisionStatements().add(buildAuthzDecisionStatement());
+
+        //主题的特定标识属性
+        assertion.getAttributeStatements().add(buildAttributeStatement(permissionList,artifactDTO));
+
 
         return assertion;
     }

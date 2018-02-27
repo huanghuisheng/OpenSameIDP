@@ -1,0 +1,98 @@
+html {
+	font-size: 75px;
+}
+
+.mMain {
+	min-height: 100%;
+	position: relative;
+	font-size: 12px;
+	font-family: "微软雅黑";
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+.mMain1 {
+    /*margin:0 auto;*/
+	/*float: left;*/
+	/*padding: 0 6rem;*/
+}
+
+
+[data-dpr="2"] .mMain {
+	font-size: 24px
+}
+
+[data-dpr="3"] .mMain {
+	font-size: 36px
+}
+
+.h1 {
+	font-size: 0.506rem;
+	width: 100%;
+	color: #222222;
+	text-align: center;
+}
+
+.h2 {
+	font-size: 0.4rem;
+	width: 100%;
+	padding-top: 0.666rem;
+	color: #222222;
+}
+
+.h3 {
+	font-size: 0.4rem;
+	color: #222222;
+	font-weight: 600;
+}
+
+.content {
+	font-size: 0.4rem;
+	padding-top: 0.466rem;
+	color: #222222;
+	text-indent: 1.2em;
+}
+
+
+
+
+
+.end {
+	float: right;
+	text-align: center;
+}
+
+.datecontent {
+	font-size: 0.4rem;
+	padding-top: 0.466rem;
+	color: #222222;
+	text-indent: 2em;
+}
+
+.demotable {
+	min-height: 100%;
+	position: relative;
+	font-family: "微软雅黑";
+	font-size: 0.3rem;
+	padding-top: 0.466rem;
+	color: #222222;
+	text-indent: 2em;
+	/*text-align: center;*/
+	margin:0 auto
+}
+
+.demotd{
+	text-align: center;
+	padding: 10px;
+}
+
+.content1{
+	float: right;
+	font-size: 0.4rem;
+	padding-bottom: 0.466rem;
+	color: #222222;
+	text-indent: 2em;
+}
+.content2{
+	font-size: 0.33rem;
+	padding-left: 1rem;
+}

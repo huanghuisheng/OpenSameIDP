@@ -1,5 +1,6 @@
 package no.steras.opensamlbook.idpPojo;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class DsUser {
@@ -50,7 +51,6 @@ public class DsUser {
     private Long operatorId;
 
     private Long accountType;
-
 
     public Long getId() {
         return id;

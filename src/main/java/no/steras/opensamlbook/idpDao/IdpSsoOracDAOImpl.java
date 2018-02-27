@@ -5,6 +5,7 @@ import com.tone.util.BaseProcessor;
 import no.steras.opensamlbook.idpDto.ArtifactDTO;
 import no.steras.opensamlbook.idpDto.PermissionDTO;
 import no.steras.opensamlbook.idpPojo.DsAssociationPermission;
+import no.steras.opensamlbook.idpPojo.DsServiceProvider;
 import no.steras.opensamlbook.idpPojo.DsUser;
 import no.steras.opensamlbook.idpPojo.DsUserAssociation;
 
@@ -51,6 +52,22 @@ public class IdpSsoOracDAOImpl extends BaseDAO implements IdpSsoDAO {
 	}
 
 	public List<PermissionDTO> getAllResource(DsUser user) {
+		return null;
+	}
+
+	public int saveServiceProvider(DsServiceProvider serviceProvider) {
+		return 0;
+	}
+
+	public Object saveUser(DsUser user) {
+		return null;
+	}
+
+	public List<DsUser> queryUser(DsUser user) {
+		return null;
+	}
+
+	public List<DsServiceProvider> queryServiceProvider(DsServiceProvider serviceProvider) {
 		return null;
 	}
 }

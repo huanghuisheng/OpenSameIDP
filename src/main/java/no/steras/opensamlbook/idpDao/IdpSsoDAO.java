@@ -3,6 +3,7 @@ package no.steras.opensamlbook.idpDao;
 import no.steras.opensamlbook.idpDto.ArtifactDTO;
 import no.steras.opensamlbook.idpDto.PermissionDTO;
 import no.steras.opensamlbook.idpPojo.DsAssociationPermission;
+import no.steras.opensamlbook.idpPojo.DsServiceProvider;
 import no.steras.opensamlbook.idpPojo.DsUser;
 import no.steras.opensamlbook.idpPojo.DsUserAssociation;
 
@@ -19,5 +20,14 @@ public interface IdpSsoDAO {
 
 
 	public List<PermissionDTO> getAllResource(DsUser user);
+
+	public int saveServiceProvider(DsServiceProvider serviceProvider);
+
+    public Object saveUser(DsUser user);
+
+    public List<DsUser> queryUser(DsUser user);
+
+    public List<DsServiceProvider> queryServiceProvider(DsServiceProvider serviceProvider);
+
 
 }
