@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : database17
-Source Server Version : 50553
-Source Host           : 192.168.1.17:3306
+Source Server         : local
+Source Server Version : 50717
+Source Host           : localhost:3306
 Source Database       : test
 
 Target Server Type    : MYSQL
-Target Server Version : 50553
+Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-03-01 20:07:45
+Date: 2018-03-01 22:57:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -114,7 +114,26 @@ CREATE TABLE `ds_service_provider` (
 -- ----------------------------
 -- Records of ds_service_provider
 -- ----------------------------
-INSERT INTO `ds_service_provider` VALUES ('123456789', 'b系统', null, null, null, null, null, null);
+INSERT INTO `ds_service_provider` VALUES ('123456789', 'b系统', null, '1111111', 'A', null, null, null);
+
+-- ----------------------------
+-- Table structure for ds_service_url
+-- ----------------------------
+DROP TABLE IF EXISTS `ds_service_url`;
+CREATE TABLE `ds_service_url` (
+  `id` decimal(19,0) NOT NULL,
+  `service_url` varchar(255) DEFAULT NULL COMMENT '开发权限访问路径',
+  `des` varchar(255) DEFAULT NULL COMMENT '描述',
+  `service_provider_id` decimal(19,0) DEFAULT NULL COMMENT '服务系统ID',
+  `status` varchar(2) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of ds_service_url
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for ds_user
