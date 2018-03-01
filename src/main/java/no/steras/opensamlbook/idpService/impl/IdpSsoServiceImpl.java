@@ -193,7 +193,9 @@ public class IdpSsoServiceImpl implements IdpSsoService {
              if(innerList != null){
                 innerList.add(dto.getUrl());
             }else {
-
+                 List<String> newList = new ArrayList<String>();
+                newList.add(dto.getUrl());
+                 map.put(dto.getServiceProviderId()+"|"+dto.getServiceProviderName(), newList);
              }
          }
 
