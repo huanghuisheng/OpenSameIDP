@@ -1,24 +1,25 @@
 package no.steras.opensamlbook.idpDto;
 
 public class PermissionDTO {
-    private Integer systemCode;
-    private String systemName;
+    private Long serviceProviderId;
+    private String serviceProviderName;
     private String url;
 
-    public Integer getSystemCode() {
-        return systemCode;
+
+    public Long getServiceProviderId() {
+        return serviceProviderId;
     }
 
-    public void setSystemCode(Integer systemCode) {
-        this.systemCode = systemCode;
+    public void setServiceProviderId(Long serviceProviderId) {
+        this.serviceProviderId = serviceProviderId;
     }
 
-    public String getSystemName() {
-        return systemName;
+    public String getServiceProviderName() {
+        return serviceProviderName;
     }
 
-    public void setSystemName(String systemName) {
-        this.systemName = systemName;
+    public void setServiceProviderName(String serviceProviderName) {
+        this.serviceProviderName = serviceProviderName;
     }
 
     public String getUrl() {

@@ -15,6 +15,7 @@ public interface IdpSsoDAO {
 	public List<DsUserAssociation> getUserAssociation(String username, String password,String systemCodeFrom,String systemCodeTo);
 
 	public List<DsUser> getUser(DsUser user);
+	public List<DsServiceProvider> getServiceProvider(DsServiceProvider serviceProvider);
 
 	public List<DsAssociationPermission> getDsAssociationPermission(ArtifactDTO artifactDTO);
 
@@ -25,7 +26,12 @@ public interface IdpSsoDAO {
 
     public Object saveUser(DsUser user);
 
+	public Object saveUserByBatch(List<DsUser> user);
+
     public List<DsUser> queryUser(DsUser user);
+
+	public DsUser queryUserById(DsUser user);
+
 
     public List<DsServiceProvider> queryServiceProvider(DsServiceProvider serviceProvider);
 

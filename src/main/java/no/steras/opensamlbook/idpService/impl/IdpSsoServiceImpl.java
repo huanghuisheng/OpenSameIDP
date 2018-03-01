@@ -141,13 +141,13 @@ public class IdpSsoServiceImpl implements IdpSsoService {
         Artifact artifact = artifactResolve.getArtifact();
 
 //        String artifactId = Base64.decode(artifact.getArtifact());
-        String artifactId =artifact.getArtifact();
+        String artifactId = artifact.getArtifact();
         ArtifactDTO artifactDTO = artifactList.get(artifactId);
 
         if (artifactDTO != null) {
-            List<DsAssociationPermission>  permissionList =idpSsoDAO.getDsAssociationPermission(artifactDTO);
-           //构建
-            ArtifactResponse artifactResponse = buildArtifactResponse(permissionList,artifactDTO);
+            List<DsAssociationPermission> permissionList = idpSsoDAO.getDsAssociationPermission(artifactDTO);
+            //构建
+            ArtifactResponse artifactResponse = buildArtifactResponse(permissionList, artifactDTO);
             MessageContext<SAMLObject> context = new MessageContext<SAMLObject>();
             context.setMessage(artifactResponse);
             OpenSAMLUtils.logSAMLObject(artifactResponse);
@@ -163,12 +163,45 @@ public class IdpSsoServiceImpl implements IdpSsoService {
             } catch (ComponentInitializationException e) {
                 throw new RuntimeException(e);
             }
-        }else{
+        } else {
             logger.info(" artifactDTO is null ");
         }
     }
 
+
+//    	if(subscribeDateList != null && subscribeDateList.size() > 0){
+//        for (SubscribeDate subscribeDate : subscribeDateList) {
+//            List<SubscribeDate> innerList = mapInputSd.get(subscribeDate.getProducerWorkId());
+//            if(innerList != null){
+//                innerList.add(subscribeDate);
+//            }
+//            else{
+//                List<SubscribeDate> newList = new ArrayList<SubscribeDate>();
+//                newList.add(subscribeDate);
+//                mapInputSd.put(subscribeDate.getProducerWorkId(), newList);
+//            }
+//        }
+//    }
     public List<PermissionDTO> getAllResource(DsUser user) {
+        //获取所有注册的系统
+        List<DsServiceProvider> list =idpSsoDAO.getServiceProvider(null);
+        List<PermissionDTO>  listDTO = idpSsoDAO.getAllResource(user);
+        Map<String,List> map = new HashMap<String, List>();
+         for(PermissionDTO dto:listDTO)
+         {
+             List<String> innerList = map.get(dto.getServiceProviderId()+"|"+dto.getServiceProviderName());
+             if(innerList != null){
+                innerList.add(dto.getUrl());
+            }else {
+
+             }
+         }
+
+
+
+
+
+
         return idpSsoDAO.getAllResource(user);
     }
 
@@ -186,23 +219,22 @@ public class IdpSsoServiceImpl implements IdpSsoService {
         statusCode.setValue(StatusCode.SUCCESS);
         status.setStatusCode(statusCode);
         response.setStatus(status);
-        Assertion assertion = buildAssertion(user,permissionDTO);
+        Assertion assertion = buildAssertion(user, permissionDTO);
         signAssertion(assertion);
         EncryptedAssertion encryptedAssertion = encryptAssertion(assertion);
         response.getEncryptedAssertions().add(encryptedAssertion);
+        response.getAssertions().add(assertion);
         return OpenSAMLUtils.buildXMLObjectToString(response);
     }
 
     public int saveServiceProvider(DsServiceProvider serviceProvider) {
         List<DsServiceProvider> list = idpSsoDAO.queryServiceProvider(serviceProvider);
-        if(list!=null&&list.size()==0)
-        {
+        if (list != null && list.size() == 0) {
             serviceProvider.setId((Long) CustomGenerator.generate());
             Object object = idpSsoDAO.saveServiceProvider(serviceProvider);
-            if(object!=null)
-            {
+            if (object != null) {
                 return 1;
-            }else {
+            } else {
                 return -1;
             }
         }
@@ -222,56 +254,56 @@ public class IdpSsoServiceImpl implements IdpSsoService {
         // 根据文件格式(2003或者2007)来初始化
         Sheet sheet = wb.getSheetAt(0); // 获得第一个表单
         Iterator<Row> rows = sheet.rowIterator();
-        List listImei = new ArrayList<Object>();
+        List<DsUser> listUser = new ArrayList<DsUser>();
         List errorImei = new ArrayList<Object>();
 
         while (rows.hasNext()) {
             Row row = rows.next(); // 获得行数据
             Iterator<Cell> cells = row.cellIterator(); // 获得第一行的迭代器
 
-
-
             if (row.getRowNum() == 0) {
                 continue;
             }
 //            用户名称	地区	性别	电话号码	email地址	密码	登记系统编码
-            while (cells.hasNext()) {
-                Cell cell = cells.next();
-            }
-            DsUser user=new DsUser();
+//            while (cells.hasNext()) {
+//                Cell cell = cells.next();
+//            }
+            Long region =row.getCell(1)==null||("").equals(row.getCell(1).getStringCellValue())?null:Long.valueOf(row.getCell(1).getStringCellValue());
+            Long sex =row.getCell(2)==null||("").equals(row.getCell(2).getStringCellValue())?null:Long.valueOf(row.getCell(2).getStringCellValue());
+            String phone =row.getCell(3)==null||("").equals(row.getCell(3).getStringCellValue())?null:row.getCell(3).getStringCellValue();
+            String email =row.getCell(4)==null||("").equals(row.getCell(4).getStringCellValue())?null:row.getCell(4).getStringCellValue();
+            String password =row.getCell(5)==null||("").equals(row.getCell(5).getStringCellValue())?null:row.getCell(4).getStringCellValue();
+
+            DsUser user = new DsUser();
+            user.setId((Long)CustomGenerator.generate());
             user.setLoginName(row.getCell(0).getStringCellValue());
-            user.setRegion(Long.valueOf(row.getCell(1).getStringCellValue()));
-            user.setSex(Long.valueOf(row.getCell(2).getStringCellValue()));
-            user.setPhone(row.getCell(0).getStringCellValue());
-            user.setEmail(row.getCell(0).getStringCellValue());
-            user.setPassword(row.getCell(5).getStringCellValue());
-
-
-
-
-
-
-
+            user.setRegion(region);
+            user.setSex(sex);
+            user.setPhone(phone);
+            user.setEmail(email);
+            user.setPassword(password);
+//            DsUser object = idpSsoDAO.queryUserById(user);
+//            if (object == null) {
+                listUser.add(user);
+//            }
         }
 
         //批量保存用户信息
-
-
-        System.out.println("list is ---" + listImei);
-        System.out.println("list size is ---" + listImei.size());
-        System.out.println("error is ---" + errorImei);
-        return 0;
+        Object flag = idpSsoDAO.saveUserByBatch(listUser);
+        if (flag != null) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 
     public int saveUser(DsUser user) {
         List<DsUser> list = idpSsoDAO.getUser(user);
-        if(list!=null&&list.size()==0)
-        {
-            Object object = 	idpSsoDAO.saveUser(user);
-            if(object!=null)
-            {
+        if (list != null && list.size() == 0) {
+            Object object = idpSsoDAO.saveUser(user);
+            if (object != null) {
                 return 1;
-            }else {
+            } else {
                 return -1;
             }
         }
@@ -305,7 +337,7 @@ public class IdpSsoServiceImpl implements IdpSsoService {
 
         assertion.setConditions(buildConditions());
 
-        assertion.getAttributeStatements().add(buildAttributeStatement(user,permissionDTO));
+        assertion.getAttributeStatements().add(buildAttributeStatement(user, permissionDTO));
 
         assertion.getAuthnStatements().add(buildAuthnStatement());
 
@@ -315,11 +347,7 @@ public class IdpSsoServiceImpl implements IdpSsoService {
     }
 
 
-
-
-
-
-    private ArtifactResponse buildArtifactResponse(List<DsAssociationPermission> permissionList,ArtifactDTO artifactDTO) {
+    private ArtifactResponse buildArtifactResponse(List<DsAssociationPermission> permissionList, ArtifactDTO artifactDTO) {
         ArtifactResponse artifactResponse = OpenSAMLUtils.buildSAMLObject(ArtifactResponse.class);
         Issuer issuer = OpenSAMLUtils.buildSAMLObject(Issuer.class);
         issuer.setValue(IDPConstants.IDP_ENTITY_ID);
@@ -351,7 +379,7 @@ public class IdpSsoServiceImpl implements IdpSsoService {
         response.setStatus(status2);
         artifactResponse.setMessage(response);
 
-        Assertion assertion = buildAssertion(permissionList,artifactDTO);
+        Assertion assertion = buildAssertion(permissionList, artifactDTO);
 
         signAssertion(assertion);
         EncryptedAssertion encryptedAssertion = encryptAssertion(assertion);
@@ -361,12 +389,7 @@ public class IdpSsoServiceImpl implements IdpSsoService {
     }
 
 
-
-
-
-
-
-    private Assertion buildAssertion(List<DsAssociationPermission> permissionList,ArtifactDTO artifactDTO) {
+    private Assertion buildAssertion(List<DsAssociationPermission> permissionList, ArtifactDTO artifactDTO) {
         Assertion assertion = OpenSAMLUtils.buildSAMLObject(Assertion.class);
         //IDP的唯一标识符
         Issuer issuer = OpenSAMLUtils.buildSAMLObject(Issuer.class);
@@ -398,13 +421,11 @@ public class IdpSsoServiceImpl implements IdpSsoService {
         assertion.getAuthzDecisionStatements().add(buildAuthzDecisionStatement());
 
         //主题的特定标识属性
-        assertion.getAttributeStatements().add(buildAttributeStatement(permissionList,artifactDTO));
+        assertion.getAttributeStatements().add(buildAttributeStatement(permissionList, artifactDTO));
 
 
         return assertion;
     }
-
-
 
 
     /**
@@ -490,14 +511,23 @@ public class IdpSsoServiceImpl implements IdpSsoService {
     private AttributeStatement buildAttributeStatement(DsUser user, PermissionDTO permissionDTO) {
         AttributeStatement attributeStatement = OpenSAMLUtils.buildSAMLObject(AttributeStatement.class);
         Attribute attributeUserName = OpenSAMLUtils.buildSAMLObject(Attribute.class);
-        XSStringBuilder stringBuilder = (XSStringBuilder)XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(XSString.TYPE_NAME);
+        XSStringBuilder stringBuilder = (XSStringBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(XSString.TYPE_NAME);
         assert stringBuilder != null;
+
         XSString userNameValue = stringBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME);
         userNameValue.setValue(user.getLoginName());
         attributeUserName.getAttributeValues().add(userNameValue);
         attributeUserName.setName("username");
+
+        XSString passwordValue = stringBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME);
+        passwordValue.setValue(user.getPassword());
+        attributeUserName.getAttributeValues().add(passwordValue);
+        attributeUserName.setName("password");
+
+
         return attributeStatement;
     }
+
     private AuthzDecisionStatement buildAuthzDecisionStatement(PermissionDTO permissionDTO) {
         AuthzDecisionStatement authzDecisionStatement = OpenSAMLUtils.buildSAMLObject(AuthzDecisionStatement.class);
 //        authzDecisionStatement.setResource("http://localhost:8070/hoffice/smsdoctor/referredreservations.do?method=enter&tagrandom=0.5669605692950603");
@@ -507,22 +537,10 @@ public class IdpSsoServiceImpl implements IdpSsoService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    private AttributeStatement buildAttributeStatement(List<DsAssociationPermission> permissionList,ArtifactDTO artifactDTO) {
+    private AttributeStatement buildAttributeStatement(List<DsAssociationPermission> permissionList, ArtifactDTO artifactDTO) {
         AttributeStatement attributeStatement = OpenSAMLUtils.buildSAMLObject(AttributeStatement.class);
         Attribute attributeUserName = OpenSAMLUtils.buildSAMLObject(Attribute.class);
-        XSStringBuilder stringBuilder = (XSStringBuilder)XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(XSString.TYPE_NAME);
+        XSStringBuilder stringBuilder = (XSStringBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(XSString.TYPE_NAME);
         assert stringBuilder != null;
         XSString userNameValue = stringBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME);
         userNameValue.setValue(artifactDTO.getName());
@@ -530,13 +548,9 @@ public class IdpSsoServiceImpl implements IdpSsoService {
         attributeUserName.setName("username");
 
 
-
         Attribute attributeLevel = OpenSAMLUtils.buildSAMLObject(Attribute.class);
 
-
-
-        for(DsAssociationPermission dsAssociationPermission:permissionList)
-        {
+        for (DsAssociationPermission dsAssociationPermission : permissionList) {
             XSString levelValue = stringBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME);
             levelValue.setValue(dsAssociationPermission.getUrl());
             attributeLevel.getAttributeValues().add(levelValue);
@@ -547,13 +561,13 @@ public class IdpSsoServiceImpl implements IdpSsoService {
         return attributeStatement;
     }
 
-   private AuthzDecisionStatement buildAuthzDecisionStatement() {
-    AuthzDecisionStatement authzDecisionStatement = OpenSAMLUtils.buildSAMLObject(AuthzDecisionStatement.class);
-    authzDecisionStatement.setResource("http://localhost:8090/hoffice/smsdoctor/referredreservations.do?method=enter&tagrandom=0.5669605692950603");
-    authzDecisionStatement.setDecision(DecisionTypeEnumeration.PERMIT);
+    private AuthzDecisionStatement buildAuthzDecisionStatement() {
+        AuthzDecisionStatement authzDecisionStatement = OpenSAMLUtils.buildSAMLObject(AuthzDecisionStatement.class);
+        authzDecisionStatement.setResource("http://localhost:8090/hoffice/smsdoctor/referredreservations.do?method=enter&tagrandom=0.5669605692950603");
+        authzDecisionStatement.setDecision(DecisionTypeEnumeration.PERMIT);
 
-    return authzDecisionStatement;
-}
+        return authzDecisionStatement;
+    }
 
 
 }

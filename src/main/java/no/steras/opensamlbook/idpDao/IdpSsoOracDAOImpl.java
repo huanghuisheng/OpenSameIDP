@@ -63,7 +63,15 @@ public class IdpSsoOracDAOImpl extends BaseDAO implements IdpSsoDAO {
 		return null;
 	}
 
+	public Object saveUserByBatch(List<DsUser> user) {
+		return null;
+	}
+
 	public List<DsUser> queryUser(DsUser user) {
+		return null;
+	}
+
+	public DsUser queryUserById(DsUser user) {
 		return null;
 	}
 

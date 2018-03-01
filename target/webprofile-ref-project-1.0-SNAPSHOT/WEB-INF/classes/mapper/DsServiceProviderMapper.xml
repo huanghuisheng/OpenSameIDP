@@ -15,7 +15,7 @@
     id, sevice_name, register_time, service_url, status, upload_strategy, check_strategy, 
     update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="no.steras.opensamlbook.idpPojo.DsServiceProvider" >
     select 
     <include refid="Base_Column_List" />
     from ds_service_provider

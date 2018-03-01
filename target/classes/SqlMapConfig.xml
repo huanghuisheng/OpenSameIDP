@@ -8,5 +8,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<mappers>
 	<!-- 	 <mapper resource="mapper/SmsMemberMapper.xml"/>  -->
 		 <mapper resource="mapper/DsServiceProviderMapper.xml"/>
+		 <mapper resource="mapper/DsUserMapper.xml"/>
 	</mappers>
 </configuration>

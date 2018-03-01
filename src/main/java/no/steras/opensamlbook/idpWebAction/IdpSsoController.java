@@ -10,12 +10,6 @@ import no.steras.opensamlbook.util.Base64;
 import no.steras.opensamlbook.util.HttpRedirectClient;
 import no.steras.opensamlbook.util.IDPConstants;
 import no.steras.opensamlbook.util.generator.CustomGenerator;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -28,9 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.DecimalFormat;
-import java.util.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/idpSso")
@@ -162,15 +154,12 @@ public class IdpSsoController  {
         Integer checkStrategy = req.getParameter("checkStrategy") == null || ("").equals(req.getParameter("checkStrategy")) ? null : Integer.valueOf(req.getParameter("checkStrategy"));
         String serviceUrl = req.getParameter("serviceUrl") == null || ("").equals(req.getParameter("serviceUrl")) ? null : req.getParameter("serviceUrl");
 
-
         serviceProvider.setSeviceName(seviceName);
         serviceProvider.setUploadStrategy(uploadStrategy);
         serviceProvider.setCheckStrategy(checkStrategy);
         serviceProvider.setServiceUrl(serviceUrl);
 
-
         int flag=  service.saveServiceProvider(serviceProvider);
-
         if(flag>0)
         {
             dto.setCode(1);
@@ -190,19 +179,24 @@ public class IdpSsoController  {
      * @param groupid
      * @throws Exception
      */
-//    @ResponseBody
-//    @RequestMapping("UploadUser")
-//    public  ObjectRsDTO fileUpload(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request, String groupid) throws Exception {
-//
-//        ObjectRsDTO dto =new ObjectRsDTO();
-//
-//        IdpSsoService service = (IdpSsoService) ServiceHelper.getService(IdpSsoService.class);
-//        int flag= service.saveBatchUser(file);
-//
-//
-//        return dto;
-//
-//    }
+    @ResponseBody
+    @RequestMapping("UploadfileUser.do")
+    public  ObjectRsDTO UploadfileUser(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request, String groupid) throws Exception {
+
+        ObjectRsDTO dto =new ObjectRsDTO();
+        IdpSsoService service = (IdpSsoService) ServiceHelper.getService(IdpSsoService.class);
+        int flag= service.saveBatchUser(file);
+
+        if(flag>0)
+        {
+            dto.setCode(1);
+            dto.setMessage("上传用户成功");
+        }else {
+            dto.setCode(-1);
+            dto.setMessage("上传用户失败,部分用户数据有问题");
+        }
+        return dto;
+    }
 
     /***
      * 上传用户,保存用户，

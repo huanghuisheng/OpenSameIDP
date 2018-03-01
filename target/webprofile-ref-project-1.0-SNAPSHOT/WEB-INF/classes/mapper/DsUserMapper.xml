@@ -1,319 +1,345 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="no.steras.opensamlbook.idpPojo.DsUserMapper" >
-  <resultMap id="BaseResultMap" type="no.steras.opensamlbook.idpPojo.DsUser" >
-    <id column="id" property="id" jdbcType="DECIMAL" />
-    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
-    <result column="eff_date" property="effDate" jdbcType="TIMESTAMP" />
-    <result column="exp_date" property="expDate" jdbcType="TIMESTAMP" />
-    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
-    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
-    <result column="region" property="region" jdbcType="DECIMAL" />
-    <result column="sex" property="sex" jdbcType="DECIMAL" />
-    <result column="account_status" property="accountStatus" jdbcType="DECIMAL" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="lst_logon_date" property="lstLogonDate" jdbcType="TIMESTAMP" />
-    <result column="logon_trial_date" property="logonTrialDate" jdbcType="TIMESTAMP" />
-    <result column="lst_logon_result" property="lstLogonResult" jdbcType="DECIMAL" />
-    <result column="logon_fail_cnt" property="logonFailCnt" jdbcType="INTEGER" />
-    <result column="pwd_change_date" property="pwdChangeDate" jdbcType="TIMESTAMP" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="pwd_question" property="pwdQuestion" jdbcType="VARCHAR" />
-    <result column="pwd_answer" property="pwdAnswer" jdbcType="VARCHAR" />
-    <result column="org_id" property="orgId" jdbcType="DECIMAL" />
-    <result column="status" property="status" jdbcType="VARCHAR" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="operator_id" property="operatorId" jdbcType="DECIMAL" />
-    <result column="account_type" property="accountType" jdbcType="DECIMAL" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    id, login_name, eff_date, exp_date, last_name, first_name, region, sex, account_status, 
-    phone, email, lst_logon_date, logon_trial_date, lst_logon_result, logon_fail_cnt, 
-    pwd_change_date, password, pwd_question, pwd_answer, org_id, status, update_time, 
-    operator_id, account_type
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
-    select 
-    <include refid="Base_Column_List" />
-    from ds_user
-    where id = #{id,jdbcType=DECIMAL}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
-    delete from ds_user
-    where id = #{id,jdbcType=DECIMAL}
-  </delete>
-  <insert id="insert" parameterType="no.steras.opensamlbook.idpPojo.DsUser" >
-    insert into ds_user (id, login_name, eff_date, 
-      exp_date, last_name, first_name, 
-      region, sex, account_status, 
-      phone, email, lst_logon_date, 
-      logon_trial_date, lst_logon_result, logon_fail_cnt, 
-      pwd_change_date, password, pwd_question, 
-      pwd_answer, org_id, status, 
-      update_time, operator_id, account_type
-      )
-    values (#{id,jdbcType=DECIMAL}, #{loginName,jdbcType=VARCHAR}, #{effDate,jdbcType=TIMESTAMP}, 
-      #{expDate,jdbcType=TIMESTAMP}, #{lastName,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR}, 
-      #{region,jdbcType=DECIMAL}, #{sex,jdbcType=DECIMAL}, #{accountStatus,jdbcType=DECIMAL}, 
-      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{lstLogonDate,jdbcType=TIMESTAMP}, 
-      #{logonTrialDate,jdbcType=TIMESTAMP}, #{lstLogonResult,jdbcType=DECIMAL}, #{logonFailCnt,jdbcType=INTEGER}, 
-      #{pwdChangeDate,jdbcType=TIMESTAMP}, #{password,jdbcType=VARCHAR}, #{pwdQuestion,jdbcType=VARCHAR}, 
-      #{pwdAnswer,jdbcType=VARCHAR}, #{orgId,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=DECIMAL}, #{accountType,jdbcType=DECIMAL}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="no.steras.opensamlbook.idpPojo.DsUser" >
-    insert into ds_user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="loginName != null" >
-        login_name,
-      </if>
-      <if test="effDate != null" >
-        eff_date,
-      </if>
-      <if test="expDate != null" >
-        exp_date,
-      </if>
-      <if test="lastName != null" >
-        last_name,
-      </if>
-      <if test="firstName != null" >
-        first_name,
-      </if>
-      <if test="region != null" >
-        region,
-      </if>
-      <if test="sex != null" >
-        sex,
-      </if>
-      <if test="accountStatus != null" >
-        account_status,
-      </if>
-      <if test="phone != null" >
-        phone,
-      </if>
-      <if test="email != null" >
-        email,
-      </if>
-      <if test="lstLogonDate != null" >
-        lst_logon_date,
-      </if>
-      <if test="logonTrialDate != null" >
-        logon_trial_date,
-      </if>
-      <if test="lstLogonResult != null" >
-        lst_logon_result,
-      </if>
-      <if test="logonFailCnt != null" >
-        logon_fail_cnt,
-      </if>
-      <if test="pwdChangeDate != null" >
-        pwd_change_date,
-      </if>
-      <if test="password != null" >
-        password,
-      </if>
-      <if test="pwdQuestion != null" >
-        pwd_question,
-      </if>
-      <if test="pwdAnswer != null" >
-        pwd_answer,
-      </if>
-      <if test="orgId != null" >
-        org_id,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-      <if test="operatorId != null" >
-        operator_id,
-      </if>
-      <if test="accountType != null" >
-        account_type,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=DECIMAL},
-      </if>
-      <if test="loginName != null" >
-        #{loginName,jdbcType=VARCHAR},
-      </if>
-      <if test="effDate != null" >
-        #{effDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="expDate != null" >
-        #{expDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastName != null" >
-        #{lastName,jdbcType=VARCHAR},
-      </if>
-      <if test="firstName != null" >
-        #{firstName,jdbcType=VARCHAR},
-      </if>
-      <if test="region != null" >
-        #{region,jdbcType=DECIMAL},
-      </if>
-      <if test="sex != null" >
-        #{sex,jdbcType=DECIMAL},
-      </if>
-      <if test="accountStatus != null" >
-        #{accountStatus,jdbcType=DECIMAL},
-      </if>
-      <if test="phone != null" >
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null" >
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="lstLogonDate != null" >
-        #{lstLogonDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="logonTrialDate != null" >
-        #{logonTrialDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lstLogonResult != null" >
-        #{lstLogonResult,jdbcType=DECIMAL},
-      </if>
-      <if test="logonFailCnt != null" >
-        #{logonFailCnt,jdbcType=INTEGER},
-      </if>
-      <if test="pwdChangeDate != null" >
-        #{pwdChangeDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="pwdQuestion != null" >
-        #{pwdQuestion,jdbcType=VARCHAR},
-      </if>
-      <if test="pwdAnswer != null" >
-        #{pwdAnswer,jdbcType=VARCHAR},
-      </if>
-      <if test="orgId != null" >
-        #{orgId,jdbcType=DECIMAL},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="operatorId != null" >
-        #{operatorId,jdbcType=DECIMAL},
-      </if>
-      <if test="accountType != null" >
-        #{accountType,jdbcType=DECIMAL},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="no.steras.opensamlbook.idpPojo.DsUser" >
-    update ds_user
-    <set >
-      <if test="loginName != null" >
-        login_name = #{loginName,jdbcType=VARCHAR},
-      </if>
-      <if test="effDate != null" >
+<mapper namespace="no.steras.opensamlbook.idpPojo.DsUserMapper">
+    <resultMap id="BaseResultMap" type="no.steras.opensamlbook.idpPojo.DsUser">
+        <id column="id" property="id" jdbcType="DECIMAL"/>
+        <result column="login_name" property="loginName" jdbcType="VARCHAR"/>
+        <result column="eff_date" property="effDate" jdbcType="TIMESTAMP"/>
+        <result column="exp_date" property="expDate" jdbcType="TIMESTAMP"/>
+        <result column="last_name" property="lastName" jdbcType="VARCHAR"/>
+        <result column="first_name" property="firstName" jdbcType="VARCHAR"/>
+        <result column="region" property="region" jdbcType="DECIMAL"/>
+        <result column="sex" property="sex" jdbcType="DECIMAL"/>
+        <result column="account_status" property="accountStatus" jdbcType="DECIMAL"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="lst_logon_date" property="lstLogonDate" jdbcType="TIMESTAMP"/>
+        <result column="logon_trial_date" property="logonTrialDate" jdbcType="TIMESTAMP"/>
+        <result column="lst_logon_result" property="lstLogonResult" jdbcType="DECIMAL"/>
+        <result column="logon_fail_cnt" property="logonFailCnt" jdbcType="INTEGER"/>
+        <result column="pwd_change_date" property="pwdChangeDate" jdbcType="TIMESTAMP"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="pwd_question" property="pwdQuestion" jdbcType="VARCHAR"/>
+        <result column="pwd_answer" property="pwdAnswer" jdbcType="VARCHAR"/>
+        <result column="org_id" property="orgId" jdbcType="DECIMAL"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="operator_id" property="operatorId" jdbcType="DECIMAL"/>
+        <result column="account_type" property="accountType" jdbcType="DECIMAL"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, login_name, eff_date, exp_date, last_name, first_name, region, sex, account_status,
+        phone, email, lst_logon_date, logon_trial_date, lst_logon_result, logon_fail_cnt,
+        pwd_change_date, password, pwd_question, pwd_answer, org_id, status, update_time,
+        operator_id, account_type
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal">
+        select
+        <include refid="Base_Column_List"/>
+        from ds_user
+        where id = #{id,jdbcType=DECIMAL}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal">
+        delete from ds_user
+        where id = #{id,jdbcType=DECIMAL}
+    </delete>
+    <insert id="insert" parameterType="no.steras.opensamlbook.idpPojo.DsUser">
+        insert into ds_user (id, login_name, eff_date,
+        exp_date, last_name, first_name,
+        region, sex, account_status,
+        phone, email, lst_logon_date,
+        logon_trial_date, lst_logon_result, logon_fail_cnt,
+        pwd_change_date, password, pwd_question,
+        pwd_answer, org_id, status,
+        update_time, operator_id, account_type
+        )
+        values (#{id,jdbcType=DECIMAL}, #{loginName,jdbcType=VARCHAR}, #{effDate,jdbcType=TIMESTAMP},
+        #{expDate,jdbcType=TIMESTAMP}, #{lastName,jdbcType=VARCHAR}, #{firstName,jdbcType=VARCHAR},
+        #{region,jdbcType=DECIMAL}, #{sex,jdbcType=DECIMAL}, #{accountStatus,jdbcType=DECIMAL},
+        #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{lstLogonDate,jdbcType=TIMESTAMP},
+        #{logonTrialDate,jdbcType=TIMESTAMP}, #{lstLogonResult,jdbcType=DECIMAL}, #{logonFailCnt,jdbcType=INTEGER},
+        #{pwdChangeDate,jdbcType=TIMESTAMP}, #{password,jdbcType=VARCHAR}, #{pwdQuestion,jdbcType=VARCHAR},
+        #{pwdAnswer,jdbcType=VARCHAR}, #{orgId,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP}, #{operatorId,jdbcType=DECIMAL}, #{accountType,jdbcType=DECIMAL}
+        )
+    </insert>
+
+    <insert id="insertByBatch" parameterType="java.util.List">
+        insert into ds_user (id, login_name, eff_date,
+        exp_date, last_name, first_name,
+        region, sex, account_status,
+        phone, email, lst_logon_date,
+        logon_trial_date, lst_logon_result, logon_fail_cnt,
+        pwd_change_date, password, pwd_question,
+        pwd_answer, org_id, status,
+        update_time, operator_id, account_type
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.id,jdbcType=DECIMAL}, #{item.loginName,jdbcType=VARCHAR}, #{item.effDate,jdbcType=TIMESTAMP},
+            #{item.expDate,jdbcType=TIMESTAMP}, #{item.lastName,jdbcType=VARCHAR}, #{item.firstName,jdbcType=VARCHAR},
+            #{item.region,jdbcType=DECIMAL}, #{item.sex,jdbcType=DECIMAL}, #{item.accountStatus,jdbcType=DECIMAL},
+            #{item.phone,jdbcType=VARCHAR}, #{item.email,jdbcType=VARCHAR}, #{item.lstLogonDate,jdbcType=TIMESTAMP},
+            #{item.logonTrialDate,jdbcType=TIMESTAMP}, #{item.lstLogonResult,jdbcType=DECIMAL}, #{item.logonFailCnt,jdbcType=INTEGER},
+            #{item.pwdChangeDate,jdbcType=TIMESTAMP}, #{item.password,jdbcType=VARCHAR}, #{item.pwdQuestion,jdbcType=VARCHAR},
+            #{item.pwdAnswer,jdbcType=VARCHAR}, #{item.orgId,jdbcType=DECIMAL}, #{item.status,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP}, #{item.operatorId,jdbcType=DECIMAL}, #{item.accountType,jdbcType=DECIMAL}
+            )
+        </foreach>
+    </insert>
+
+
+    <insert id="insertSelective" parameterType="no.steras.opensamlbook.idpPojo.DsUser">
+        insert into ds_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="loginName != null">
+                login_name,
+            </if>
+            <if test="effDate != null">
+                eff_date,
+            </if>
+            <if test="expDate != null">
+                exp_date,
+            </if>
+            <if test="lastName != null">
+                last_name,
+            </if>
+            <if test="firstName != null">
+                first_name,
+            </if>
+            <if test="region != null">
+                region,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="accountStatus != null">
+                account_status,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="lstLogonDate != null">
+                lst_logon_date,
+            </if>
+            <if test="logonTrialDate != null">
+                logon_trial_date,
+            </if>
+            <if test="lstLogonResult != null">
+                lst_logon_result,
+            </if>
+            <if test="logonFailCnt != null">
+                logon_fail_cnt,
+            </if>
+            <if test="pwdChangeDate != null">
+                pwd_change_date,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="pwdQuestion != null">
+                pwd_question,
+            </if>
+            <if test="pwdAnswer != null">
+                pwd_answer,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="operatorId != null">
+                operator_id,
+            </if>
+            <if test="accountType != null">
+                account_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=DECIMAL},
+            </if>
+            <if test="loginName != null">
+                #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="effDate != null">
+                #{effDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expDate != null">
+                #{expDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastName != null">
+                #{lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="firstName != null">
+                #{firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="region != null">
+                #{region,jdbcType=DECIMAL},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=DECIMAL},
+            </if>
+            <if test="accountStatus != null">
+                #{accountStatus,jdbcType=DECIMAL},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="lstLogonDate != null">
+                #{lstLogonDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="logonTrialDate != null">
+                #{logonTrialDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lstLogonResult != null">
+                #{lstLogonResult,jdbcType=DECIMAL},
+            </if>
+            <if test="logonFailCnt != null">
+                #{logonFailCnt,jdbcType=INTEGER},
+            </if>
+            <if test="pwdChangeDate != null">
+                #{pwdChangeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="pwdQuestion != null">
+                #{pwdQuestion,jdbcType=VARCHAR},
+            </if>
+            <if test="pwdAnswer != null">
+                #{pwdAnswer,jdbcType=VARCHAR},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorId != null">
+                #{operatorId,jdbcType=DECIMAL},
+            </if>
+            <if test="accountType != null">
+                #{accountType,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="no.steras.opensamlbook.idpPojo.DsUser">
+        update ds_user
+        <set>
+            <if test="loginName != null">
+                login_name = #{loginName,jdbcType=VARCHAR},
+            </if>
+            <if test="effDate != null">
+                eff_date = #{effDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expDate != null">
+                exp_date = #{expDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastName != null">
+                last_name = #{lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="firstName != null">
+                first_name = #{firstName,jdbcType=VARCHAR},
+            </if>
+            <if test="region != null">
+                region = #{region,jdbcType=DECIMAL},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=DECIMAL},
+            </if>
+            <if test="accountStatus != null">
+                account_status = #{accountStatus,jdbcType=DECIMAL},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="lstLogonDate != null">
+                lst_logon_date = #{lstLogonDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="logonTrialDate != null">
+                logon_trial_date = #{logonTrialDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lstLogonResult != null">
+                lst_logon_result = #{lstLogonResult,jdbcType=DECIMAL},
+            </if>
+            <if test="logonFailCnt != null">
+                logon_fail_cnt = #{logonFailCnt,jdbcType=INTEGER},
+            </if>
+            <if test="pwdChangeDate != null">
+                pwd_change_date = #{pwdChangeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="pwdQuestion != null">
+                pwd_question = #{pwdQuestion,jdbcType=VARCHAR},
+            </if>
+            <if test="pwdAnswer != null">
+                pwd_answer = #{pwdAnswer,jdbcType=VARCHAR},
+            </if>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operatorId != null">
+                operator_id = #{operatorId,jdbcType=DECIMAL},
+            </if>
+            <if test="accountType != null">
+                account_type = #{accountType,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="no.steras.opensamlbook.idpPojo.DsUser">
+        update ds_user
+        set login_name = #{loginName,jdbcType=VARCHAR},
         eff_date = #{effDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="expDate != null" >
         exp_date = #{expDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lastName != null" >
         last_name = #{lastName,jdbcType=VARCHAR},
-      </if>
-      <if test="firstName != null" >
         first_name = #{firstName,jdbcType=VARCHAR},
-      </if>
-      <if test="region != null" >
         region = #{region,jdbcType=DECIMAL},
-      </if>
-      <if test="sex != null" >
         sex = #{sex,jdbcType=DECIMAL},
-      </if>
-      <if test="accountStatus != null" >
         account_status = #{accountStatus,jdbcType=DECIMAL},
-      </if>
-      <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="lstLogonDate != null" >
         lst_logon_date = #{lstLogonDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="logonTrialDate != null" >
         logon_trial_date = #{logonTrialDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="lstLogonResult != null" >
         lst_logon_result = #{lstLogonResult,jdbcType=DECIMAL},
-      </if>
-      <if test="logonFailCnt != null" >
         logon_fail_cnt = #{logonFailCnt,jdbcType=INTEGER},
-      </if>
-      <if test="pwdChangeDate != null" >
         pwd_change_date = #{pwdChangeDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="password != null" >
         password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="pwdQuestion != null" >
         pwd_question = #{pwdQuestion,jdbcType=VARCHAR},
-      </if>
-      <if test="pwdAnswer != null" >
         pwd_answer = #{pwdAnswer,jdbcType=VARCHAR},
-      </if>
-      <if test="orgId != null" >
         org_id = #{orgId,jdbcType=DECIMAL},
-      </if>
-      <if test="status != null" >
         status = #{status,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="operatorId != null" >
         operator_id = #{operatorId,jdbcType=DECIMAL},
-      </if>
-      <if test="accountType != null" >
-        account_type = #{accountType,jdbcType=DECIMAL},
-      </if>
-    </set>
-    where id = #{id,jdbcType=DECIMAL}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="no.steras.opensamlbook.idpPojo.DsUser" >
-    update ds_user
-    set login_name = #{loginName,jdbcType=VARCHAR},
-      eff_date = #{effDate,jdbcType=TIMESTAMP},
-      exp_date = #{expDate,jdbcType=TIMESTAMP},
-      last_name = #{lastName,jdbcType=VARCHAR},
-      first_name = #{firstName,jdbcType=VARCHAR},
-      region = #{region,jdbcType=DECIMAL},
-      sex = #{sex,jdbcType=DECIMAL},
-      account_status = #{accountStatus,jdbcType=DECIMAL},
-      phone = #{phone,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      lst_logon_date = #{lstLogonDate,jdbcType=TIMESTAMP},
-      logon_trial_date = #{logonTrialDate,jdbcType=TIMESTAMP},
-      lst_logon_result = #{lstLogonResult,jdbcType=DECIMAL},
-      logon_fail_cnt = #{logonFailCnt,jdbcType=INTEGER},
-      pwd_change_date = #{pwdChangeDate,jdbcType=TIMESTAMP},
-      password = #{password,jdbcType=VARCHAR},
-      pwd_question = #{pwdQuestion,jdbcType=VARCHAR},
-      pwd_answer = #{pwdAnswer,jdbcType=VARCHAR},
-      org_id = #{orgId,jdbcType=DECIMAL},
-      status = #{status,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      operator_id = #{operatorId,jdbcType=DECIMAL},
-      account_type = #{accountType,jdbcType=DECIMAL}
-    where id = #{id,jdbcType=DECIMAL}
-  </update>
+        account_type = #{accountType,jdbcType=DECIMAL}
+        where id = #{id,jdbcType=DECIMAL}
+    </update>
 </mapper>

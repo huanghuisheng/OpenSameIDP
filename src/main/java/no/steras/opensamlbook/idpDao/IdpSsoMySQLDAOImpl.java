@@ -49,6 +49,20 @@ public class IdpSsoMySQLDAOImpl extends BaseDAO implements IdpSsoDAO {
 		return list;
 	}
 
+	public List<DsServiceProvider> getServiceProvider(DsServiceProvider serviceProvider) {
+		StringBuffer sql =new StringBuffer();
+		List param=new ArrayList();
+		sql.append("SELECT  * from ds_service_provider where status = 'A' ");
+
+		if(serviceProvider.getId()!=null)
+		{
+			sql.append(" and id = ? ");
+			param.add(serviceProvider.getId());
+		}
+		List<DsServiceProvider> list=this.select(sql.toString(),null,param.toArray(), new BaseProcessor(DsServiceProvider.class));
+		return list;
+	}
+
 	public List<DsAssociationPermission> getDsAssociationPermission(ArtifactDTO artifactDTO) {
 		StringBuffer sql =new StringBuffer();
 		List param=new ArrayList();
@@ -74,7 +88,7 @@ public class IdpSsoMySQLDAOImpl extends BaseDAO implements IdpSsoDAO {
 	public List<PermissionDTO> getAllResource(DsUser user) {
 		StringBuffer sql =new StringBuffer();
 		List param=new ArrayList();
-		sql.append("SELECT  dua.system_code,dua.system_name,dap.url from ds_user_association dua " +
+		sql.append("SELECT  dua.service_provider_id,dua.service_provider_name,dap.url from ds_user_association dua " +
 				"LEFT JOIN  ds_association_permission dap " +
 				" on dua.id=dap.association_id ");
 		sql.append(" where 1=1  and dap.status='A' ");
@@ -105,6 +119,10 @@ public class IdpSsoMySQLDAOImpl extends BaseDAO implements IdpSsoDAO {
         return this.create(user);
     }
 
+    public Object saveUserByBatch(List<DsUser> user) {
+        return this.createByBatch(user);
+    }
+
     public List<DsUser> queryUser(DsUser user) {
 
         StringBuffer sql =new StringBuffer();
@@ -122,6 +140,10 @@ public class IdpSsoMySQLDAOImpl extends BaseDAO implements IdpSsoDAO {
         }
         List<DsUser> list=this.select(sql.toString(),null,param.toArray(), new BaseProcessor(DsUser.class));
         return list;
+    }
+
+    public DsUser queryUserById(DsUser user) {
+        return (DsUser) this.selectOne(user);
     }
 
     public List<DsServiceProvider> queryServiceProvider(DsServiceProvider serviceProvider) {
