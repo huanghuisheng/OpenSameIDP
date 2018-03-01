@@ -54,11 +54,11 @@ public class IdpSsoMySQLDAOImpl extends BaseDAO implements IdpSsoDAO {
 		List param=new ArrayList();
 		sql.append("SELECT  * from ds_service_provider where status = 'A' ");
 
-		if(serviceProvider.getId()!=null)
-		{
-			sql.append(" and id = ? ");
-			param.add(serviceProvider.getId());
-		}
+//		if(serviceProvider.getId()!=null)
+//		{
+//			sql.append(" and id = ? ");
+//			param.add(serviceProvider.getId());
+//		}
 		List<DsServiceProvider> list=this.select(sql.toString(),null,param.toArray(), new BaseProcessor(DsServiceProvider.class));
 		return list;
 	}

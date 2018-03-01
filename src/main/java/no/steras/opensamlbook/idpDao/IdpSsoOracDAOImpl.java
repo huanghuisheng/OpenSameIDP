@@ -47,6 +47,10 @@ public class IdpSsoOracDAOImpl extends BaseDAO implements IdpSsoDAO {
 		return null;
 	}
 
+	public List<DsServiceProvider> getServiceProvider(DsServiceProvider serviceProvider) {
+		return null;
+	}
+
 	public List<DsAssociationPermission> getDsAssociationPermission(ArtifactDTO artifactDTO) {
 		return null;
 	}

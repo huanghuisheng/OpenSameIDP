@@ -182,7 +182,7 @@ public class IdpSsoServiceImpl implements IdpSsoService {
 //            }
 //        }
 //    }
-    public List<PermissionDTO> getAllResource(DsUser user) {
+    public List<Map<String,List>> getAllResource(DsUser user) {
         //获取所有注册的系统
         List<DsServiceProvider> list =idpSsoDAO.getServiceProvider(null);
         List<PermissionDTO>  listDTO = idpSsoDAO.getAllResource(user);
@@ -194,17 +194,24 @@ public class IdpSsoServiceImpl implements IdpSsoService {
                 innerList.add(dto.getUrl());
             }else {
                  List<String> newList = new ArrayList<String>();
-                newList.add(dto.getUrl());
+                 newList.add(dto.getUrl());
                  map.put(dto.getServiceProviderId()+"|"+dto.getServiceProviderName(), newList);
              }
          }
-
-
-
-
-
-
-        return idpSsoDAO.getAllResource(user);
+        for(DsServiceProvider dto:list)
+        {
+            List<String> innerList = map.get(dto.getId()+"|"+dto.getSeviceName());
+            if(innerList != null){
+                innerList.add(dto.getServiceUrl());
+            }else {
+                List<String> newList = new ArrayList<String>();
+                newList.add(dto.getServiceUrl());
+                map.put(dto.getId()+"|"+dto.getSeviceName(), newList);
+            }
+        }
+        List lista=new ArrayList<Map<String, List>>();
+        lista.add(map);
+        return lista;
     }
 
     public String getAssertionsResolve(DsUser user, PermissionDTO permissionDTO) {

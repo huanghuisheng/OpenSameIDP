@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 public interface IdpSsoService {
 
@@ -26,7 +27,7 @@ public interface IdpSsoService {
 
     public void artifactResolve( HttpServletRequest req,  HttpServletResponse resp) throws Exception;
 
-    public List<PermissionDTO> getAllResource(DsUser user);
+    public List<Map<String,List>> getAllResource(DsUser user);
 
     public String  getAssertionsResolve(DsUser user,PermissionDTO  permissionDTO);
 

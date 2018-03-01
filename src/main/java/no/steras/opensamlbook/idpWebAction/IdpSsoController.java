@@ -74,7 +74,7 @@ public class IdpSsoController  {
         if(user!=null)
         {
             dto.setCode(1);
-            List<PermissionDTO> list= service.getAllResource(user);
+            List list= service.getAllResource(user);
             dto.setContent(list);
             dto.setMessage("查询成功");
         }else{
