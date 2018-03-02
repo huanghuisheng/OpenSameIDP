@@ -204,7 +204,7 @@ public class IdpSsoController  {
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping("UploadUser")
+    @RequestMapping("UploadUser.do")
     public  ObjectRsDTO UploadUser( HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
         ObjectRsDTO dto =new ObjectRsDTO();
