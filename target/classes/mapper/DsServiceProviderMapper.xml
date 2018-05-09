@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="no.steras.opensamlbook.idpPojo.DsServiceProviderMapper" >
-  <resultMap id="BaseResultMap" type="no.steras.opensamlbook.idpPojo.DsServiceProvider" >
+  <resultMap id="BaseResultMap" type="com.smal.sso.idpPojo.DsServiceProvider" >
     <id column="id" property="id" jdbcType="DECIMAL" />
     <result column="sevice_name" property="seviceName" jdbcType="VARCHAR" />
     <result column="register_time" property="registerTime" jdbcType="TIMESTAMP" />
@@ -15,7 +15,7 @@
     id, sevice_name, register_time, service_url, status, upload_strategy, check_strategy, 
     update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="no.steras.opensamlbook.idpPojo.DsServiceProvider" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.smal.sso.idpPojo.DsServiceProvider" >
     select 
     <include refid="Base_Column_List" />
     from ds_service_provider
@@ -25,7 +25,7 @@
     delete from ds_service_provider
     where id = #{id,jdbcType=DECIMAL}
   </delete>
-  <insert id="insert" parameterType="no.steras.opensamlbook.idpPojo.DsServiceProvider" >
+  <insert id="insert" parameterType="com.smal.sso.idpPojo.DsServiceProvider" >
     insert into ds_service_provider (id, sevice_name, register_time, 
       service_url, status, upload_strategy, 
       check_strategy, update_time)
@@ -35,7 +35,7 @@
   </insert>
 
 
-  <update id="updateByPrimaryKey" parameterType="no.steras.opensamlbook.idpPojo.DsServiceProvider" >
+  <update id="updateByPrimaryKey" parameterType="com.smal.sso.idpPojo.DsServiceProvider" >
     update ds_service_provider
     set sevice_name = #{seviceName,jdbcType=VARCHAR},
       register_time = #{registerTime,jdbcType=TIMESTAMP},

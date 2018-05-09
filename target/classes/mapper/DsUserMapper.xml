@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="no.steras.opensamlbook.idpPojo.DsUserMapper">
-    <resultMap id="BaseResultMap" type="no.steras.opensamlbook.idpPojo.DsUser">
+    <resultMap id="BaseResultMap" type="com.smal.sso.idpPojo.DsUser">
         <id column="id" property="id" jdbcType="DECIMAL"/>
         <result column="login_name" property="loginName" jdbcType="VARCHAR"/>
         <result column="eff_date" property="effDate" jdbcType="TIMESTAMP"/>
@@ -43,7 +43,7 @@
         delete from ds_user
         where id = #{id,jdbcType=DECIMAL}
     </delete>
-    <insert id="insert" parameterType="no.steras.opensamlbook.idpPojo.DsUser">
+    <insert id="insert" parameterType="com.smal.sso.idpPojo.DsUser">
         insert into ds_user (id, login_name, eff_date,
         exp_date, last_name, first_name,
         region, sex, account_status,
@@ -89,7 +89,7 @@
     </insert>
 
 
-    <insert id="insertSelective" parameterType="no.steras.opensamlbook.idpPojo.DsUser">
+    <insert id="insertSelective" parameterType="com.smal.sso.idpPojo.DsUser">
         insert into ds_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -240,7 +240,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="no.steras.opensamlbook.idpPojo.DsUser">
+    <update id="updateByPrimaryKeySelective" parameterType="com.smal.sso.idpPojo.DsUser">
         update ds_user
         <set>
             <if test="loginName != null">
@@ -315,7 +315,7 @@
         </set>
         where id = #{id,jdbcType=DECIMAL}
     </update>
-    <update id="updateByPrimaryKey" parameterType="no.steras.opensamlbook.idpPojo.DsUser">
+    <update id="updateByPrimaryKey" parameterType="com.smal.sso.idpPojo.DsUser">
         update ds_user
         set login_name = #{loginName,jdbcType=VARCHAR},
         eff_date = #{effDate,jdbcType=TIMESTAMP},

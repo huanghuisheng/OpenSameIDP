@@ -45,7 +45,7 @@
 
     <filter>
         <filter-name>AccessFilter</filter-name>
-        <filter-class>no.steras.opensamlbook.util.AccessFilter</filter-class>
+        <filter-class>com.smal.sso.util.AccessFilter</filter-class>
     </filter>
 
     <filter-mapping>
